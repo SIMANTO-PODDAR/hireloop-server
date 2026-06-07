@@ -33,6 +33,7 @@ async function run() {
         const companyCollection = database.collection("companies");
         const usersCollection = database.collection("user");
         const applicationsCollection = database.collection("applications");
+        const planCollection = database.collection('plans');
 
         app.get('/api/users', async (req, res) => {
 
@@ -124,6 +125,16 @@ async function run() {
             }
             const result = await companyCollection.insertOne(newCompany);
             res.send(result);
+        })
+
+        // plans 
+        app.get('/api/plans', async (req, res) => {
+            const query = {}
+            if (req.query.plan_id) {
+                query.id = req.query.plan_id
+            }
+            const plan = await planCollection.findOne(query);
+            res.send(plan)
         })
 
         // Send a ping to confirm a successful connection
